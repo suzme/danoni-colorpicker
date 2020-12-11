@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "build": "node build.js",
-    "start": "node build.js -watch"
+    "start": "node build.js -watch",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "react": "^17.0.1",
@@ -12,8 +13,9 @@
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "fs-extra": "^9.0.1",
     "estrella": "^1.2.10",
+    "fs-extra": "^9.0.1",
+    "gh-pages": "^3.1.0",
     "path": "^0.12.7",
     "serve-http": "^1.0.6"
   }
