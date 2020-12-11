@@ -1,0 +1,61 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(#111111, #333333);
+  color: #eeeeee;
+  height: 100%;
+  font-size: 12pt;
+}
+
+.App {
+  margin-top: 1em;
+  margin-left: 1em;
+}
+
+.App > div {
+  margin-bottom: 1em;
+}
+
+.arrows {
+  display: flex;
+}
+
+.arrows > div {
+  padding: 4px;
+}
+
+.checkboxLabel {
+  user-select: none;
+  padding-left: 4px;
+}
+
+#dos {
+  color: #999999;
+  white-space: pre;
+}
+
+input[type="button"] {
+  padding: 4px;
+}
+
+.footer {
+  font-size: 80%;
+  margin-top: 3em;
+}
+
+.footer a:any-link {
+  color: hsl(212, 70%, 50%);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
