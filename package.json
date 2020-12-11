@@ -1,0 +1,20 @@
+{
+  "name": "danoni-colorpicker",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "node build.js",
+    "start": "node build.js -watch"
+  },
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-color": "^2.19.3",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "fs-extra": "^9.0.1",
+    "estrella": "^1.2.10",
+    "path": "^0.12.7",
+    "serve-http": "^1.0.6"
+  }
+}
