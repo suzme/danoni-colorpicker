@@ -1,15 +1,14 @@
 {
   "name": "danoni-colorpicker",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "scripts": {
     "build": "node build.js",
-    "start": "node build.js -watch",
+    "start": "node build.js -watch -g -inline-sourcemap",
     "deploy": "gh-pages -d build"
   },
   "dependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "preact": "^10.5.7",
     "tinycolor2": "^1.4.2"
   },
   "devDependencies": {

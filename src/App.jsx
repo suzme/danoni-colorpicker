@@ -1,66 +1,107 @@
-import * as React from 'react'
+import { h, Component } from 'preact'
 import Arrow from './Arrow'
 import Package from '../package.json'
 
 const defaultMiddleColor = '#eeeeee'
 const defaultColors = ['#6666ff', '#99ffff', '#ffffff', '#ffff99', '#ff9966']
 
-const App = () => {
-  const [defaultColorgrd, setDefaultColorgrd] = React.useState(false)
-  const [colors, setColors] = React.useState(['#cccccc', '#3277ff', '#ffffff', '#ff3284', '#d632ff'])
-  const [middleColor, setMiddleColor] = React.useState('#eeeeee')
-  const [dosStr, setDosStr] = React.useState('')
-
-  const generateDosStr = (colors, defaultColorgrd) => {
-    const defaultColorgrdStr = defaultColorgrd.toString()
-    + ((middleColor === defaultMiddleColor) ? '' : ',' + middleColor)
-
-    return `|setColor=${colors.join(',')}|\n`
-         + `|defaultColorgrd=${defaultColorgrdStr}|`
-  }
-
-  if (dosStr === '') {
-    setDosStr(generateDosStr(colors, defaultColorgrd))
-  }
-
-  const arrows = colors.map((color, index) => {
-    const props = {
-      key: index,
-      image: index === 2 ? './onigiri.svg' : './arrow.svg',
-      color: color,
-      middleColor: middleColor,
-      width: 48,
-      height: 48,
-      defaultColorgrd: defaultColorgrd,
-      onColorChange: color => {
-        const colorsCopy = colors.slice()
-        colorsCopy[index] = color
-        setColors(colorsCopy)
-        setDosStr(generateDosStr(colorsCopy, defaultColorgrd))
-      }
+export default class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      defaultColorgrd: false,
+      colors: ['#cccccc', '#3277ff', '#ffffff', '#ff3284', '#d632ff'],
+      middleColor: '#eeeeee',
+      dosStr: ''
     }
-    return <Arrow {...props}/>
-  })
 
-  const defaultColorgrdChange = e => {
-    setDefaultColorgrd(e.target.checked)
-    setDosStr(generateDosStr(colors, e.target.checked))
+    this.copy = this.copy.bind(this)
+    this.generateDosStr = this.generateDosStr.bind(this)
+    this.defaultColorgrdChange = this.defaultColorgrdChange.bind(this)
+    this.dosChange = this.dosChange.bind(this)
+    this.dosBlur = this.dosBlur.bind(this)
   }
 
-  const copy = () => {
+  render() {
+    if (this.state.dosStr === '') {
+      this.setState({
+        dosStr: this.generateDosStr(this.state.colors, this.state.defaultColorgrd)
+      })
+    }
+
+    const arrows = this.state.colors.map((color, index) => {
+      const props = {
+        key: index,
+        image: index === 2 ? './onigiri.svg' : './arrow.svg',
+        color: color,
+        middleColor: this.state.middleColor,
+        width: 48,
+        height: 48,
+        defaultColorgrd: this.state.defaultColorgrd,
+        onColorChange: color => {
+          const colorsCopy = this.state.colors.slice()
+          colorsCopy[index] = color
+          this.setState({
+            colors: colorsCopy,
+            dosStr: this.generateDosStr(colorsCopy, this.state.defaultColorgrd)
+          })
+        }
+      }
+      return <Arrow {...props}/>
+    })
+
+    return (
+      <div className="App">
+        <div className="arrows">
+          {arrows}
+        </div>
+        <div>
+          <input id="gradient" type="checkbox" onChange={this.defaultColorgrdChange} checked={this.state.defaultColorgrd}/>
+          <label htmlFor="gradient" className="checkboxLabel">グラデーション(defaultColorgrd)</label>
+        </div>
+        <textarea id='dos' value={this.state.dosStr} onChange={this.dosChange} onBlur={this.dosBlur}/>
+        <div>
+          <input type="button" value="コピー" onClick={this.copy}/>
+        </div>
+        <div className="footer">
+          <a href="https://github.com/suzme/danoni-colorpicker">{Package.name}@{Package.version}</a><br/>
+          <a href="THIRD_PARTY_NOTICES.TXT">オープンソースライセンスを表示</a>
+        </div>
+      </div>
+    );
+  }
+
+  copy() {
     const textarea = document.createElement('textarea')
-    textarea.value = dos
+    textarea.value = this.state.dosStr
     document.body.appendChild(textarea)
     textarea.select()
     document.execCommand('copy')
     document.body.removeChild(textarea)
   }
 
-  const dosChange = e => {
-    setDosStr(e.target.value)
+  generateDosStr(colors, defaultColorgrd) {
+    const defaultColorgrdStr = defaultColorgrd.toString()
+    + ((this.state.middleColor === defaultMiddleColor) ? '' : ',' + this.state.middleColor)
+
+    return `|setColor=${colors.join(',')}|\n`
+         + `|defaultColorgrd=${defaultColorgrdStr}|`
   }
 
-  const dosBlur = e => {
+  defaultColorgrdChange(e) {
+    this.setState({
+      defaultColorgrd: e.target.checked,
+      dosStr: this.generateDosStr(this.state.colors, e.target.checked)
+    })
+  }
+
+  dosChange(e) {
+    this.setState({
+      dosStr: e.target.value
+    })
+  }
+
+  dosBlur(e) {
     const dosObj = Object.fromEntries(
       e.target.value
         .replace(/\r|\n/g,'')
@@ -74,37 +115,17 @@ const App = () => {
       for (let i = newColors.length; i < defaultColors.length; i++) {
         newColors.push(defaultColors[i])
       }
-      setColors(newColors)
+      this.setState({
+        colors: newColors
+      })
     }
 
     if (dosObj.defaultColorgrd) {
       const [newDefaultColorgrd, newMiddleColor] = dosObj.defaultColorgrd.split(',')
-      setDefaultColorgrd(newDefaultColorgrd === 'true')
-      if (newMiddleColor) {
-        setMiddleColor(newMiddleColor)
-      }
+      this.setState({
+        defaultColorgrd: newDefaultColorgrd === 'true',
+        middleColor: newMiddleColor || defaultMiddleColor
+      })
     }
   }
-
-  return (
-    <div className="App">
-      <div className="arrows">
-        {arrows}
-      </div>
-      <div>
-        <input id="gradient" type="checkbox" onChange={defaultColorgrdChange} checked={defaultColorgrd}/>
-        <label htmlFor="gradient" className="checkboxLabel">グラデーション(defaultColorgrd)</label>
-      </div>
-      <textarea id='dos' value={dosStr} onChange={dosChange} onBlur={dosBlur}/>
-      <div>
-        <input type="button" value="コピー" onClick={copy}/>
-      </div>
-      <div className="footer">
-        <a href="https://github.com/suzme/danoni-colorpicker">{Package.name}@{Package.version}</a><br/>
-        <a href="THIRD_PARTY_NOTICES.TXT">オープンソースライセンスを表示</a>
-      </div>
-    </div>
-  );
 }
-
-export default App;

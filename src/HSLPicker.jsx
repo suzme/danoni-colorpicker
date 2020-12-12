@@ -1,16 +1,16 @@
-import * as React from 'react'
+import { h, Component } from 'preact'
 import Slider from './Slider'
 import tinycolor from 'tinycolor2'
 
-export default class HSLPicker extends React.Component {
+export default class HSLPicker extends Component {
   constructor(props) {
     super(props)
     const hsl = tinycolor(props.color).toHsl()
     this.state = hsl
   }
 
-  setHSL(h, s, l) {
-    const hsl = {h: h, s: s, l: l}
+  setHSL(hue, saturation, lightness) {
+    const hsl = {h: hue, s: saturation, l: lightness}
     this.props.onChange(tinycolor(hsl).toHexString())
     this.setState(hsl)
   }
@@ -21,12 +21,12 @@ export default class HSLPicker extends React.Component {
       this.setState(tinycolor(this.props.color).toHsl())
     }
 
-    const [h, s, l] = [this.state.h, this.state.s, this.state.l]
-    const s0 = tinycolor({h: h, s: 0, l: l}).toHexString()
-    const s1 = tinycolor({h: h, s: 1, l: l}).toHexString()
-    const l0 = tinycolor({h: h, s: s, l: 0}).toHexString()
-    const l05 = tinycolor({h: h, s: s, l: 0.5}).toHexString()
-    const l1 = tinycolor({h: h, s: s, l: 1}).toHexString()
+    const [hue, saturation, lightness] = [this.state.h, this.state.s, this.state.l]
+    const s0 = tinycolor({h: hue, s: 0, l: lightness}).toHexString()
+    const s1 = tinycolor({h: hue, s: 1, l: lightness}).toHexString()
+    const l0 = tinycolor({h: hue, s: saturation, l: 0}).toHexString()
+    const l05 = tinycolor({h: hue, s: saturation, l: 0.5}).toHexString()
+    const l1 = tinycolor({h: hue, s: saturation, l: 1}).toHexString()
   
     const hueBg = 'linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)'
     const saturationBg = `linear-gradient(to right, ${s0}, ${s1})`
@@ -60,16 +60,16 @@ export default class HSLPicker extends React.Component {
     return (
       <div {...picker}>
         <div {...sliderWrapper}>
-          <Slider value={h / 360} background={hueBg} onChange={h => this.setHSL(h * 360, s, l)}/>
-          <input type="text" value={h.toFixed(0)} {...textbox} onChange={e => this.setHSL(Number(e.target.value), s, l)}/>
+          <Slider value={hue / 360} background={hueBg} onChange={val => this.setHSL(val * 360, saturation, lightness)}/>
+          <input type="text" value={hue.toFixed(0)} {...textbox} onChange={e => this.setHSL(Number(e.target.value), saturation, lightness)}/>
         </div>
         <div {...sliderWrapper}>
-          <Slider value={s} background={saturationBg} onChange={s => this.setHSL(h, s, l)}/>
-          <input type="text" value={(s * 100).toFixed(0)} {...textbox} onChange={e => this.setHSL(h, Number(e.target.value) / 100, l)}/>
+          <Slider value={saturation} background={saturationBg} onChange={val => this.setHSL(hue, val, lightness)}/>
+          <input type="text" value={(saturation * 100).toFixed(0)} {...textbox} onChange={e => this.setHSL(hue, Number(e.target.value) / 100, lightness)}/>
         </div>
         <div {...sliderWrapper}>
-          <Slider value={l} background={lightnessBg} onChange={l => this.setHSL(h, s, l)}/>
-          <input type="text" value={(l * 100).toFixed(0)} {...textbox} onChange={e => this.setHSL(h, s, Number(e.target.value) / 100)}/>
+          <Slider value={lightness} background={lightnessBg} onChange={val => this.setHSL(hue, saturation, val)}/>
+          <input type="text" value={(lightness * 100).toFixed(0)} {...textbox} onChange={e => this.setHSL(hue, saturation, Number(e.target.value) / 100)}/>
         </div>
       </div>
     )

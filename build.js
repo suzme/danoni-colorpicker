@@ -12,9 +12,7 @@ build({
   entry: "src/index.jsx",
   outfile: `${buildDir}/index.js`,
   bundle: true,
-  define: {
-    'process.env.NODE_ENV': 'production'
-  }
+  jsxFactory: 'h'
 })
 
 fs.copySync(publicDir, buildDir)

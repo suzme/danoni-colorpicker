@@ -1,6 +1,6 @@
-import * as React from 'react'
+import { h, Component, createRef } from 'preact'
 
-export default class Slider extends React.Component {
+export default class Slider extends Component {
   constructor(props) {
     super(props)
 
@@ -8,7 +8,7 @@ export default class Slider extends React.Component {
       isDragging: false
     }
 
-    this.myRef = React.createRef()
+    this.myRef = createRef()
 
     this.mouseUp = this.mouseUp.bind(this)
     this.mouseDown = this.mouseDown.bind(this)
