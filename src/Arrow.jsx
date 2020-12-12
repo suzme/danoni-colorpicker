@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ChromePicker } from 'react-color'
+import HSLPicker from './HSLPicker'
 import MaskImage from './MaskImage'
 
 const Arrow = props => {
@@ -32,8 +32,7 @@ const Arrow = props => {
 
   const picker = {
     color: props.color,
-    disableAlpha: true,
-    onChange: color => props.onColorChange(color.hex)
+    onChange: color => props.onColorChange(color)
   }
 
   const cover = {
@@ -55,7 +54,9 @@ const Arrow = props => {
       <MaskImage {...arrow}/>
       <div {...popover}>
         <div {...cover}/>
-        <ChromePicker {...picker}/>
+      </div>
+      <div {...popover}>
+        <HSLPicker {...picker}/>
       </div>
     </div>
   )
