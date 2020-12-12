@@ -47,6 +47,8 @@ export default class Slider extends Component {
   }
 
   render() {
+    const val = Math.max(0, Math.min(1, this.props.value))
+
     const slider = {
       ref: this.myRef,
       onMouseDown: this.mouseDown,
@@ -66,7 +68,7 @@ export default class Slider extends Component {
         borderRadius: 50,
         position: 'absolute',
         top: 0,
-        left: Math.floor((this.props.value * slider.style.width) - (slider.style.height / 2)),
+        left: Math.floor((val * slider.style.width) - (slider.style.height / 2)),
         width: slider.style.height,
         height: slider.style.height
       }
