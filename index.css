@@ -38,8 +38,10 @@ body {
 }
 
 #dos {
-  color: #999999;
-  white-space: pre;
+  color: #666666;
+  width: 30em;
+  height: 3em;
+  padding: 4px;
 }
 
 input[type="button"] {
