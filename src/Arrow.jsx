@@ -6,7 +6,7 @@ const Arrow = props => {
   const [selected, setSelected] = React.useState(false)
 
   const color = props.color
-  const gradient = `linear-gradient(to right, ${color}, #eeeeee, ${color})`
+  const gradient = `linear-gradient(to right, ${color}, ${props.middleColor}, ${color})`
 
   const wrapper = {
     style: {
@@ -49,7 +49,7 @@ const Arrow = props => {
       e.stopPropagation()
     }
   }
-  
+
   return (
     <div {...wrapper}>
       <MaskImage {...arrow}/>
