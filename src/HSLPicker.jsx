@@ -16,9 +16,11 @@ export default class HSLPicker extends Component {
   }
 
   render() {
-    const hex = tinycolor(this.state).toHexString()
-    if (hex != this.props.color) {
-      this.setState(tinycolor(this.props.color).toHsl())
+    const hexState = tinycolor(this.state).toHexString()
+    const hexProps = tinycolor(this.props.color).toHexString()
+    if (hexState !== hexProps) {
+      const hsl = tinycolor(hexProps).toHsl()
+      this.setHSL(hsl.h, hsl.s, hsl.l)
     }
 
     const [hue, saturation, lightness] = [this.state.h, this.state.s, this.state.l]
