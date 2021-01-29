@@ -17,7 +17,7 @@ danoniplus-images フォルダ以下の画像ファイルはtickle氏の[Dancing
 gitとNode.jsが必要です。
 - 事前準備
 ```
-git clone https://github.com/suzme/danoni-base64.git
+git clone https://github.com/suzme/danoni-colorpicker.git
 npm install
 ```
 
