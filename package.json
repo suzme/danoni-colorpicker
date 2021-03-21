@@ -1,7 +1,8 @@
 {
   "name": "danoni-colorpicker",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "build": "node build.js",
     "start": "node build.js -watch -g -inline-sourcemap",

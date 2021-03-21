@@ -18,7 +18,6 @@ export default class App extends Component {
     this.copy = this.copy.bind(this)
     this.generateDosStr = this.generateDosStr.bind(this)
     this.defaultColorgrdChange = this.defaultColorgrdChange.bind(this)
-    this.dosChange = this.dosChange.bind(this)
     this.dosBlur = this.dosBlur.bind(this)
   }
 
@@ -59,7 +58,7 @@ export default class App extends Component {
           <input id="gradient" type="checkbox" onChange={this.defaultColorgrdChange} checked={this.state.defaultColorgrd}/>
           <label htmlFor="gradient" className="checkboxLabel">グラデーション(defaultColorgrd)</label>
         </div>
-        <textarea id='dos' value={this.state.dosStr} onChange={this.dosChange} onBlur={this.dosBlur}/>
+        <textarea id='dos' value={this.state.dosStr} onBlur={this.dosBlur}/>
         <div>
           <input type="button" value="コピー" onClick={this.copy}/>
         </div>
@@ -92,12 +91,6 @@ export default class App extends Component {
     this.setState({
       defaultColorgrd: e.target.checked,
       dosStr: this.generateDosStr(this.state.colors, e.target.checked)
-    })
-  }
-
-  dosChange(e) {
-    this.setState({
-      dosStr: e.target.value
     })
   }
 

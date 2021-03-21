@@ -7,22 +7,38 @@ export default class HSLPicker extends Component {
     super(props)
     const hsl = tinycolor(props.color).toHsl()
     this.state = hsl
+    this.setState = this.setState.bind(this)
   }
 
   setHSL(hue, saturation, lightness) {
+    if (
+      isNaN(hue) || isNaN(saturation) || isNaN(lightness) ||
+      hue > 360 || saturation > 1 || lightness > 1 ||
+      hue < 0 || saturation < 0 || lightness < 0
+    ) {
+      this.setState({...this.state})
+      return
+    }
     const hsl = {h: hue, s: saturation, l: lightness}
     this.props.onChange(tinycolor(hsl).toHexString())
     this.setState(hsl)
   }
 
-  render() {
+  componentDidUpdate(prevProps) {
+    if (this.props.color === prevProps.color) {
+      return
+    }
+
     const hexState = tinycolor(this.state).toHexString()
     const hexProps = tinycolor(this.props.color).toHexString()
+  
     if (hexState !== hexProps) {
       const hsl = tinycolor(hexProps).toHsl()
       this.setHSL(hsl.h, hsl.s, hsl.l)
     }
+  }
 
+  render() {
     const [hue, saturation, lightness] = [this.state.h, this.state.s, this.state.l]
     const s0 = tinycolor({h: hue, s: 0, l: lightness}).toHexString()
     const s1 = tinycolor({h: hue, s: 1, l: lightness}).toHexString()
@@ -63,15 +79,15 @@ export default class HSLPicker extends Component {
       <div {...picker}>
         <div {...sliderWrapper}>
           <Slider value={hue / 360} background={hueBg} onChange={val => this.setHSL(val * 360, saturation, lightness)}/>
-          <input type="text" value={hue.toFixed(0)} {...textbox} onChange={e => this.setHSL(Number(e.target.value), saturation, lightness)}/>
+          <input type="text" value={hue.toFixed(0)} {...textbox} onBlur={e => this.setHSL(Number(e.target.value), saturation, lightness)}/>
         </div>
         <div {...sliderWrapper}>
           <Slider value={saturation} background={saturationBg} onChange={val => this.setHSL(hue, val, lightness)}/>
-          <input type="text" value={(saturation * 100).toFixed(0)} {...textbox} onChange={e => this.setHSL(hue, Number(e.target.value) / 100, lightness)}/>
+          <input type="text" value={(saturation * 100).toFixed(0)} {...textbox} onBlur={e => this.setHSL(hue, Number(e.target.value) / 100, lightness)}/>
         </div>
         <div {...sliderWrapper}>
           <Slider value={lightness} background={lightnessBg} onChange={val => this.setHSL(hue, saturation, val)}/>
-          <input type="text" value={(lightness * 100).toFixed(0)} {...textbox} onChange={e => this.setHSL(hue, saturation, Number(e.target.value) / 100)}/>
+          <input type="text" value={(lightness * 100).toFixed(0)} {...textbox} onBlur={e => this.setHSL(hue, saturation, Number(e.target.value) / 100)}/>
         </div>
       </div>
     )
