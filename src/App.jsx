@@ -71,12 +71,7 @@ export default class App extends Component {
   }
 
   copy() {
-    const textarea = document.createElement('textarea')
-    textarea.value = this.state.dosStr
-    document.body.appendChild(textarea)
-    textarea.select()
-    document.execCommand('copy')
-    document.body.removeChild(textarea)
+    navigator.clipboard.writeText(this.state.dosStr)
   }
 
   generateDosStr(colors, defaultColorgrd) {
